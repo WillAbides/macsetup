@@ -16,5 +16,6 @@ cask "jetbrains-toolbox"
 cask "1password"
 cask "firefox"
 cask "docker"
+cask "signal"
 mas "Magnet", id: 441258766
 mas "Tailscale", id: 1475387142
