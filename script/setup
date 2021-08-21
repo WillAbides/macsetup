@@ -10,4 +10,4 @@ fi
 
 brew update
 
-caffeinate brew bundle install
+caffeinate -is brew bundle install
