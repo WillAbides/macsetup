@@ -4,6 +4,9 @@ set -e
 
 CDPATH="" cd -- "$(dirname -- "$(dirname -- "$0")")"
 
+caffeinate &
+trap "killall caffeinate" EXIT
+
 if ! hash brew 2>/dev/null; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
