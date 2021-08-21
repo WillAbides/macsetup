@@ -1,10 +1,20 @@
+brew "readline"
+brew "bash"
+brew "bash-completion"
+brew "direnv"
+brew "gh"
+brew "jq"
+brew "pstree"
 brew "coreutils"
 brew "git"
+brew "protobuf"
+brew "wget"
+brew "watch"
 cask "flycut"
 cask "iterm2"
 cask "jetbrains-toolbox"
 cask "1password"
 cask "firefox"
+cask "docker"
 mas "Magnet", id: 441258766
 mas "Tailscale", id: 1475387142
-mas "Xcode", id: 497799835
