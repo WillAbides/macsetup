@@ -1,0 +1,57 @@
+systems:
+- darwin/amd64
+- linux/amd64
+dependencies:
+  direnv:
+    template: direnv
+    vars:
+      version: 2.28.0
+  gitstatus:
+    template: gitstatus
+    vars:
+      version: 1.5.2
+  shellcheck:
+    template: origin#shellcheck
+    vars:
+      version: 0.7.2
+templates:
+  direnv:
+    url: https://github.com/direnv/direnv/releases/download/v{{.version}}/direnv.{{.os}}-{{.arch}}
+    required_vars:
+    - version
+    bin: direnv
+    archive_path: direnv.{{.os}}-{{.arch}}
+  gitstatus:
+    url: https://github.com/romkatv/gitstatus/archive/refs/tags/v{{.version}}.tar.gz
+    archive_path: gitstatus-{{.version}}
+    link: true
+    required_vars:
+    - version
+  origin#shellcheck:
+    url: https://github.com/koalaman/shellcheck/releases/download/v{{.version}}/shellcheck-v{{.version}}.{{.os}}.{{.arch}}.tar.xz
+    archive_path: shellcheck-v{{.version}}/shellcheck
+    bin: shellcheck
+    required_vars:
+    - version
+    overrides:
+    - matcher:
+        os:
+        - windows
+      dependency:
+        url: https://github.com/koalaman/shellcheck/releases/download/v{{.version}}/shellcheck-v{{.version}}.zip
+        archive_path: shellcheck-v{{.version}}.exe
+    substitutions:
+      arch:
+        amd64: x86_64
+    systems:
+    - darwin/amd64
+    - linux/amd64
+    - windows/amd64
+template_sources:
+  origin: https://raw.githubusercontent.com/WillAbides/bindown-templates/master/bindown.yml
+url_checksums:
+  https://github.com/direnv/direnv/releases/download/v2.28.0/direnv.darwin-amd64: 159ba83e96516c66ef0ac53e54a73910d565dc434ad9f20ae8419faae9fafede
+  https://github.com/direnv/direnv/releases/download/v2.28.0/direnv.linux-amd64: 74ed5e5b29b56331c9ed821b633f2ebcc9bd8c94d068ae1274c36be597991b18
+  https://github.com/koalaman/shellcheck/releases/download/v0.7.2/shellcheck-v0.7.2.darwin.x86_64.tar.xz: 969bd7ef668e8167cfbba569fb9f4a0b2fc1c4021f87032b6a0b0e525fb77369
+  https://github.com/koalaman/shellcheck/releases/download/v0.7.2/shellcheck-v0.7.2.linux.x86_64.tar.xz: 70423609f27b504d6c0c47e340f33652aea975e45f312324f2dbf91c95a3b188
+  https://github.com/romkatv/gitstatus/archive/refs/tags/v1.5.2.tar.gz: 8eb904b46876c6f8cf5314502f7cb5a25fa1ec220154ce883a1189760da99b98
