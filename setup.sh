@@ -17,12 +17,10 @@ brew update
 caffeinate -is brew bundle install
 
 if ! grep -q '/usr/local/bin/bash' /etc/shells; then
-  hold_sudo
   echo '/usr/local/bin/bash' | sudo tee -a /etc/shells
 fi
 
 if [ "$SHELL" != '/usr/local/bin/bash' ]; then
-  hold_sudo
   sudo chsh -s '/usr/local/bin/bash' "$(id -un)"
 fi
 
