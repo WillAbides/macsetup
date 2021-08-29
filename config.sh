@@ -74,12 +74,6 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 # Four-letter codes for the other view modes: `icnv`, `clmv`, `glyv`
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
-# Show the ~/Library folder
-chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
-
-# Show the /Volumes folder
-sudo chflags nohidden /Volumes
-
 # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mouse-over-hilite-stack -bool true
 
@@ -145,17 +139,12 @@ defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false
 
 for app in "Activity Monitor" \
-	"Address Book" \
-	"Calendar" \
-	"iTerm" \
 	"cfprefsd" \
 	"Contacts" \
 	"Dock" \
 	"Finder" \
 	"Messages" \
 	"Photos" \
-	"Safari" \
-	"SystemUIServer" \
-	"Terminal" ; do
+	"SystemUIServer"; do
 	killall "${app}" &> /dev/null || true
 done
