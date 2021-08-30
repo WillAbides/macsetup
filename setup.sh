@@ -56,6 +56,14 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
+# Enable three finger dragging windows
+defaults write NSGlobalDomain com.apple.trackpad.threeFingerDragGesture -bool true
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.threeFingerDragGesture -bool true
+defaults write com.apple.AppleMultitouchTrackpad Dragging -bool false
+defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool false
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
+
 # Save screenshots to ~/Documents/screenshots
 mkdir -p "$HOME/Documents/screenshots"
 defaults write com.apple.screencapture location -string "$HOME/Documents/screenshots"
