@@ -1,9 +1,10 @@
 name: ci
 on: [ push, workflow_dispatch ]
 jobs:
-  brew:
-    name: brew
+  setup:
+    name: setup
     runs-on: macos-11
     steps:
+      - uses: actions/checkout@v2
       - run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          ./setup.sh

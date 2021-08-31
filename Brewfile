@@ -27,6 +27,3 @@ cask "flycut"
 cask "iterm2"
 cask "jetbrains-toolbox"
 cask "signal"
-
-mas "Magnet", id: 441258766
-mas "Tailscale", id: 1475387142
