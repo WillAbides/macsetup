@@ -1,2 +1,5 @@
 
-brew "go", link: true
+brew "bash"
+brew "direnv"
+brew "dockutil"
+brew "go"

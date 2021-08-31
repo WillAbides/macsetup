@@ -109,8 +109,6 @@ if ! hash brew 2>/dev/null; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
-brew update
-
 caffeinate -is brew bundle install
 
 if ! grep -q '/usr/local/bin/bash' /etc/shells; then
