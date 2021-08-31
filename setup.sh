@@ -93,6 +93,12 @@ execute_sudo() {
 
 ######## END Functions taken from homebrew's install.sh ########
 
+# Check if script is run non-interactively (e.g. CI)
+# If it is run non-interactively we should not prompt for passwords.
+if [[ ! -t 0 || -n "${CI-}" ]]; then
+  NONINTERACTIVE=1
+fi
+
 # just to get sudo started
 execute_sudo echo "sudo running as $(id -un)"
 
