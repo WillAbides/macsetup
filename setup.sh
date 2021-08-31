@@ -106,8 +106,11 @@ execute_sudo true
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 if ! hash brew 2>/dev/null; then
+  ohai "installing homebrew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
+
+brew update
 
 caffeinate -is brew bundle install
 
