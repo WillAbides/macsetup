@@ -1,0 +1,13 @@
+name: ci
+on: [ push, workflow_dispatch ]
+jobs:
+  setup:
+    name: setup
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v2
+      - run: "./setup.sh"
+        env:
+          HOMEBREW_BUNDLE_BREW_SKIP: "go"
+          HOMEBREW_BUNDLE_CASK_SKIP: "docker"
+          HOMEBREW_BUNDLE_MAS_SKIP: "Magnet Tailscale"
