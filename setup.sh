@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 CDPATH="" cd -- "$(dirname -- "$0")"
 
