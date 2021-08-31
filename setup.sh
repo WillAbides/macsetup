@@ -100,7 +100,7 @@ if [[ ! -t 0 || -n "${CI-}" ]]; then
 fi
 
 # just to get sudo started
-execute_sudo echo "sudo running as $(id -un)"
+execute_sudo true
 
 # hold sudo until the script is done
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
@@ -116,7 +116,8 @@ if ! grep -q '/usr/local/bin/bash' /etc/shells; then
 fi
 
 if [ "$SHELL" != '/usr/local/bin/bash' ]; then
-  sudo chsh -s '/usr/local/bin/bash' "$(id -un)"
+  user="$(id -un)"
+  sudo chsh -s '/usr/local/bin/bash' "$user"
 fi
 
 dock_items='
