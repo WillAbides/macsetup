@@ -20,13 +20,13 @@ brew "watch"
 brew "wget"
 brew "yq"
 
-cask "1password"
-cask "docker"
-cask "firefox"
-cask "flycut"
-cask "iterm2"
-cask "jetbrains-toolbox"
-cask "signal"
+cask "1password" unless system "test -e '/Applications/1Password 7.app'"
+cask "docker" unless system "test -e '/Applications/Docker.app'"
+cask "firefox" unless system "test -e '/Applications/Docker.app'"
+cask "flycut" unless system "test -e '/Applications/Flycut.app'"
+cask "iterm2" unless system "test -e '/Applications/iTerm.app'"
+cask "jetbrains-toolbox" unless system "test -e '/Applications/JetBrains Toolbox.app'"
+cask "signal" unless system "test -e '/Applications/Signal.app'"
 
-mas "Magnet", id: 441258766
-mas "Tailscale", id: 1475387142
+mas "Magnet", id: 441258766 if system "mas account >/dev/null 2>&1"
+mas "Tailscale", id: 1475387142 if system "mas account >/dev/null 2>&1"

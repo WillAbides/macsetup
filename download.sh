@@ -10,7 +10,7 @@ TARGET="${TARGET:-"$HOME/repos/WillAbides/macsetup"}"
 git_url="https://github.com/WillAbides/macsetup.git"
 git_push_url="git@github.com:WillAbides/macsetup.git"
 
-if ! type brew; then
+if ! type brew >/dev/null 2>/&1; then
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
