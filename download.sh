@@ -11,7 +11,7 @@ git_url="https://github.com/WillAbides/macsetup.git"
 git_push_url="git@github.com:WillAbides/macsetup.git"
 
 if ! type brew; then
-  UNATTENDED=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 if [ -e "$TARGET" ]; then
