@@ -114,13 +114,13 @@ brew update
 
 caffeinate -is brew bundle install
 
-if ! grep -q '/usr/local/bin/bash' /etc/shells; then
-  echo '/usr/local/bin/bash' | sudo tee -a /etc/shells
+if ! grep -q "$(brew --prefix)/bin/bash" /etc/shells; then
+  echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
 fi
 
-if [ "$SHELL" != '/usr/local/bin/bash' ]; then
+if [ "$SHELL" != "$(brew --prefix)/bin/bash" ]; then
   user="$(id -un)"
-  sudo chsh -s '/usr/local/bin/bash' "$user"
+  sudo chsh -s "$(brew --prefix)/bin/bash""$user"
 fi
 
 dock_items='
