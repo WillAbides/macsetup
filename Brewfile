@@ -27,6 +27,6 @@ cask "flycut" unless system "test -e '/Applications/Flycut.app'"
 cask "iterm2" unless system "test -e '/Applications/iTerm.app'"
 cask "jetbrains-toolbox" unless system "test -e '/Applications/JetBrains Toolbox.app'"
 cask "signal" unless system "test -e '/Applications/Signal.app'"
+cask "rectangle" unless system "test -e '/Applications/Rectangle.app'"
 
-mas "Magnet", id: 441258766 if system "mas account >/dev/null 2>&1"
 mas "Tailscale", id: 1475387142 if system "mas account >/dev/null 2>&1"
