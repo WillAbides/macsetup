@@ -120,7 +120,7 @@ fi
 
 if [ "$SHELL" != "$(brew --prefix)/bin/bash" ]; then
   user="$(id -un)"
-  sudo chsh -s "$(brew --prefix)/bin/bash""$user"
+  sudo chsh -s "$(brew --prefix)/bin/bash" "$user"
 fi
 
 dock_items='
