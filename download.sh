@@ -20,7 +20,7 @@ if [ -e "$TARGET" ]; then
   exit 1
 fi
 
-git clone "$git_url" "$TARGET"
+git clone "$git_url"   "$TARGET"
 cd "$TARGET"
 if [ -n "${MACSETUP_COMMIT-}" ]; then
   git checkout "$MACSETUP_COMMIT"
