@@ -191,13 +191,15 @@ osascript -e 'tell application "System Events" to make login item at end with pr
 pgrep -x Flycut >/dev/null || open -a Flycut
 pgrep -x Rectangle >/dev/null || open -a Rectangle
 
-if ! grep -q "$(brew --prefix)/bin/bash" /etc/shells; then
-  echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
+brew_prefix="$(brew --prefix)"
+
+if ! grep -q "$brew_prefix/bin/bash" /etc/shells; then
+  echo "$brew_prefix/bin/bash" | sudo tee -a /etc/shells
 fi
 
-if [ "$SHELL" != "$(brew --prefix)/bin/bash" ]; then
+if [ "$SHELL" != "$brew_prefix/bin/bash" ]; then
   user="$(id -un)"
-  sudo chsh -s "$(brew --prefix)/bin/bash""$user"
+  sudo chsh -s "$brew_prefix/bin/bash" "$user"
 fi
 
 dock_items='
