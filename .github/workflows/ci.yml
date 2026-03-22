@@ -11,3 +11,15 @@ jobs:
           sh -c "$(curl -L https://raw.githubusercontent.com/WillAbides/macsetup/$MACSETUP_COMMIT/download.sh)" \
           && cd ~/repos/WillAbides/macsetup \
           && ./setup.sh
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: script/lint
+      - run: |
+          script/fmt
+          if [[ -n $(git status --porcelain) ]]; then
+              echo "Code is not formatted. Please run 'script/fmt' and commit the changes."
+              git --no-pager diff
+              exit 1
+          fi
