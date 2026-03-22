@@ -10,4 +10,3 @@ jobs:
         env:
           HOMEBREW_BUNDLE_BREW_SKIP: "go"
           HOMEBREW_BUNDLE_CASK_SKIP: "docker"
-          HOMEBREW_BUNDLE_MAS_SKIP: "Magnet Tailscale"
