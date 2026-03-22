@@ -121,7 +121,7 @@ if ! hash brew 2>/dev/null; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
-brew update
+brew update --quiet
 
 HOMEBREW_NO_INSTALL_UPGRADE=1 brew install --quiet \
   bash \
@@ -158,7 +158,7 @@ rectangle
 zed
 '
 
-installed_casks="$(brew list --cask)"
+installed_casks="$(brew list --cask 2>/dev/null)"
 install_casks=""
 for cask in $casks; do
   if ! echo "$installed_casks" | grep -q "^$cask"; then
