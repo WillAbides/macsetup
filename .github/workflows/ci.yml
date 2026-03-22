@@ -10,3 +10,10 @@ jobs:
         env:
           HOMEBREW_BUNDLE_BREW_SKIP: "go"
           HOMEBREW_BUNDLE_CASK_SKIP: "docker"
+  full:
+    runs-on: macos-latest
+    steps:
+      - run: |
+          sh -c "$(curl -L https://raw.githubusercontent.com/WillAbides/macsetup/${{ github.sha }}/download.sh)" \
+          && cd ~/repos/WillAbides/macsetup \
+          && ./setup.sh
