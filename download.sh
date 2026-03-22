@@ -22,4 +22,7 @@ fi
 
 git clone "$git_url" "$TARGET"
 cd "$TARGET"
+if [ -n "${MACSETUP_COMMIT-}" ]; then
+  git checkout "$MACSETUP_COMMIT"
+fi
 git remote set-url --push origin "$git_push_url"
