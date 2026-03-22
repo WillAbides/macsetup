@@ -1,15 +1,6 @@
 name: ci
 on: [ push, workflow_dispatch ]
 jobs:
-#  setup:
-#    name: setup
-#    runs-on: macos-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - run: "./setup.sh"
-#        env:
-#          HOMEBREW_BUNDLE_BREW_SKIP: "go"
-#          HOMEBREW_BUNDLE_CASK_SKIP: "docker"
   setup:
     runs-on: macos-latest
     steps:

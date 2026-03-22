@@ -167,6 +167,7 @@ for cask in $casks; do
 done
 if [ -n "$install_casks" ]; then
   ohai "Installing casks:$install_casks"
+  # shellcheck disable=SC2086 # intentionally split into multiple arguments
   brew install --cask $install_casks
 fi
 
