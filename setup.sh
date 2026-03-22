@@ -159,12 +159,16 @@ zed
 '
 
 installed_casks="$(brew list --cask)"
+install_casks=""
 for cask in $casks; do
   if ! echo "$installed_casks" | grep -q "^$cask"; then
-    ohai "Installing cask: $cask"
-    brew install --cask "$cask"
+    install_casks="$install_casks $cask"
   fi
 done
+if [ -n "$install_casks" ]; then
+  ohai "Installing casks:$install_casks"
+  brew install --cask $install_casks
+fi
 
 # Copy files from home/ into $HOME
 while IFS= read -r src; do
