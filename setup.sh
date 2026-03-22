@@ -168,7 +168,7 @@ done
 if [ -n "$install_casks" ]; then
   ohai "Installing casks:$install_casks"
   # shellcheck disable=SC2086 # intentionally split into multiple arguments
-  brew install --cask $install_casks
+  brew install --cask --quiet $install_casks
 fi
 
 # Copy files from home/ into $HOME
