@@ -6,7 +6,8 @@ jobs:
     env:
       MACSETUP_COMMIT: ${{ github.sha }}
     steps:
-      - run: |
+      - name: download and run
+        run: |
           export MACSETUP_COMMIT
           sh -c "$(curl -L https://raw.githubusercontent.com/WillAbides/macsetup/$MACSETUP_COMMIT/download.sh)" \
           && cd ~/repos/WillAbides/macsetup \
