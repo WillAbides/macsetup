@@ -10,8 +10,9 @@ TARGET="${TARGET:-"$HOME/repos/WillAbides/macsetup"}"
 git_url="https://github.com/WillAbides/macsetup.git"
 git_push_url="git@github.com:WillAbides/macsetup.git"
 
-if ! type brew >/dev/null 2>/&1; then
-  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if ! type brew >/dev/null 2>&1; then
+  install_brew="$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  NONINTERACTIVE=1 /bin/bash -c "$install_brew"
 fi
 
 if [ -e "$TARGET" ]; then
@@ -21,4 +22,7 @@ fi
 
 git clone "$git_url" "$TARGET"
 cd "$TARGET"
+if [ -n "${MACSETUP_COMMIT-}" ]; then
+  git checkout "$MACSETUP_COMMIT"
+fi
 git remote set-url --push origin "$git_push_url"

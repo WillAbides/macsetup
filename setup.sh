@@ -13,9 +13,7 @@ else
   tty_escape() { :; }
 fi
 tty_mkbold() { tty_escape "1;$1"; }
-tty_underline="$(tty_escape "4;39")"
 tty_blue="$(tty_mkbold 34)"
-tty_red="$(tty_mkbold 31)"
 tty_bold="$(tty_mkbold 39)"
 tty_reset="$(tty_escape 0)"
 
@@ -103,39 +101,125 @@ fi
 execute_sudo true
 
 # hold sudo until the script is done
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+  sudo -n true
+  sleep 60
+  kill -0 "$$" || exit
+done 2>/dev/null &
+
+# make sure git is installed
+if ! xcode-select -p >/dev/null 2>&1; then
+  ohai "installing Xcode Command Line Tools"
+  xcode-select --install
+  until xcode-select -p >/dev/null 2>&1; do
+    sleep 1
+  done
+fi
 
 if ! hash brew 2>/dev/null; then
   ohai "installing homebrew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
-brew update
+brew update --quiet
 
-caffeinate -is brew bundle install
+HOMEBREW_NO_INSTALL_UPGRADE=1 brew install --quiet \
+  bash \
+  bash-completion \
+  coreutils \
+  direnv \
+  dockutil \
+  findutils \
+  gh \
+  git \
+  go \
+  gnupg \
+  grep \
+  jq \
+  openssh \
+  protobuf \
+  pstree \
+  readline \
+  tree \
+  vim \
+  watch \
+  wget \
+  yq
 
-if ! grep -q "$(brew --prefix)/bin/bash" /etc/shells; then
-  echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
+casks='
+1password
+docker
+firefox
+flycut
+ghostty
+jetbrains-toolbox
+signal
+rectangle
+zed
+'
+
+installed_casks="$(brew list --cask 2>/dev/null)"
+install_casks=""
+for cask in $casks; do
+  if ! echo "$installed_casks" | grep -q "^$cask"; then
+    install_casks="$install_casks $cask"
+  fi
+done
+if [ -n "$install_casks" ]; then
+  ohai "Installing casks:$install_casks"
+  # shellcheck disable=SC2086 # intentionally split into multiple arguments
+  brew install --cask --quiet $install_casks
 fi
 
-if [ "$SHELL" != "$(brew --prefix)/bin/bash" ]; then
+# Copy files from home/ into $HOME
+while IFS= read -r src; do
+  rel="${src#./home/}"
+  dest="$HOME/$rel"
+  mkdir -p "$(dirname "$dest")"
+  if [ -e "$dest" ]; then
+    if ! diff -q "$dest" "$src" >/dev/null 2>&1; then
+      echo "Skipping $dest (already exists, differs):"
+      diff -u "$dest" "$src" || true
+      echo "  To overwrite, run:"
+      echo "    cp \"$dest\" \"$dest.bak\" && cp \"$PWD/home/$rel\" \"$dest\""
+    fi
+  else
+    cp "$src" "$dest"
+  fi
+done < <(find ./home -type f)
+
+# Add to login items
+osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Flycut.app", hidden:false}' >/dev/null
+osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Rectangle.app", hidden:false}' >/dev/null
+
+# Initial launch
+pgrep -x Flycut >/dev/null || open -a Flycut
+pgrep -x Rectangle >/dev/null || open -a Rectangle
+
+brew_prefix="$(brew --prefix)"
+
+if ! grep -q "$brew_prefix/bin/bash" /etc/shells; then
+  echo "$brew_prefix/bin/bash" | sudo tee -a /etc/shells
+fi
+
+if [ "$SHELL" != "$brew_prefix/bin/bash" ]; then
   user="$(id -un)"
-  sudo chsh -s "$(brew --prefix)/bin/bash" "$user"
+  sudo chsh -s "$brew_prefix/bin/bash" "$user"
 fi
 
 dock_items='
-/System/Applications/Launchpad.app/
+/System/Applications/Apps.app/
 /Applications/Slack.app/
 /Applications/Firefox.app/
-/Applications/iTerm.app/
-/System/Applications/System%20Preferences.app/
+/Applications/Ghostty.app/
+/System/Applications/System%20Settings.app/
 '
 
 dockutil --remove all --no-restart
 
-for item in $dock_items ; do
-    [ -e "$item" ] || continue
-    dockutil --add "$item" --no-restart
+for item in $dock_items; do
+  [ -e "$item" ] || continue
+  dockutil --add "$item" --no-restart >/dev/null
 done
 
 # Save to disk (not to iCloud) by default
@@ -184,7 +268,6 @@ defaults write com.apple.finder AppleShowAllFiles -bool true
 
 # Finder: show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-
 
 # Finder: show status bar
 defaults write com.apple.finder ShowStatusBar -bool true
@@ -267,13 +350,28 @@ defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 # Disable smart quotes as it’s annoying for messages that contain code
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false
 
-for app in "Activity Monitor" \
-	"cfprefsd" \
-	"Contacts" \
-	"Dock" \
-	"Finder" \
-	"Messages" \
-	"Photos" \
-	"SystemUIServer"; do
-	killall "${app}" >/dev/null 2>&1 || true
+# Clock settings
+defaults write com.apple.menuextra.clock DateFormat -string "EEE d MMM HH:mm:ss"
+defaults write com.apple.menuextra.clock FlashDateSeparators -bool false
+defaults write com.apple.menuextra.clock Show24Hour -bool true
+defaults write com.apple.menuextra.clock ShowAMPM -bool false
+defaults write com.apple.menuextra.clock ShowDate -int 1
+defaults write com.apple.menuextra.clock ShowDayOfWeek -bool true
+defaults write com.apple.menuextra.clock ShowSeconds -bool true
+defaults write com.apple.menuextra.clock ShowDayOfMonth -bool true
+
+killables='
+Activity Monitor
+cfprefsd
+Contacts
+Dock
+Finder
+Messages
+Photos
+ControlCenter
+SystemUIServer
+'
+
+for app in $killables; do
+  killall "${app}" >/dev/null 2>&1 || true
 done

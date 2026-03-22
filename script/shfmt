@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+CDPATH="" cd -- "$(dirname -- "$(dirname -- "$0")")"
+
+mkdir -p bin
+script/bindown install shfmt >/dev/null
+
+exec bin/shfmt "$@"

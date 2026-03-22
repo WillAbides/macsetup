@@ -4,4 +4,7 @@ set -e
 
 CDPATH="" cd -- "$(dirname -- "$(dirname -- "$0")")"
 
-script/shellcheck script/* ./*.sh
+script/shfmt \
+  --write \
+  --indent 2 \
+  .
